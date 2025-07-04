@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parola viva - Charàci</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f3e8dc;
+      background-size: 80%;
+      background-attachment: fixed;
+      font-family: 'Georgia', serif;
+      color: #3e2f1c;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      margin-top: 1.2rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .logo-symbol {
+      width: 60px;
+      height: 60px;
+      margin-top: 1rem;
+    }
+
+    .cornice {
+      background: rgba(255, 249, 242, 0.92);
+      padding: 2rem;
+      margin: 2rem;
+      border-radius: 16px;
+      max-width: 90%;
+      position: relative;
+      border: 4px solid #a97b50;
+      box-shadow: inset 0 0 0 4px #fff9f2;
+      z-index: 1;
+    }
+
+    .cornice::before, .cornice::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 16px;
+      background-image: linear-gradient(90deg,
+        transparent 0%, transparent 5%,
+        #a97b50 5%, #a97b50 10%,
+        transparent 10%, transparent 15%,
+        #a97b50 15%, #a97b50 20%,
+        transparent 20%
+      );
+      background-size: 30px 16px;
+    }
+
+    .cornice::before {
+      top: -16px;
+      left: 0;
+    }
+
+    .cornice::after {
+      bottom: -16px;
+      left: 0;
+      transform: rotate(180deg);
+    }
+
+    .cornice-left, .cornice-right {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 100%;
+      background-image: linear-gradient(
+        0deg,
+        transparent 0%, transparent 5%,
+        #a97b50 5%, #a97b50 10%,
+        transparent 10%, transparent 15%,
+        #a97b50 15%, #a97b50 20%,
+        transparent 20%
+      );
+      background-size: 16px 30px;
+    }
+
+    .cornice-left {
+      left: -16px;
+      top: 0;
+    }
+
+    .cornice-right {
+      right: -16px;
+      top: 0;
+      transform: rotate(180deg);
+    }
+
+    .proverbio, .traduzione {
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
+    }
+
+    .proverbio {
+      font-size: 1.4rem;
+      font-style: italic;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+      animation-delay: 0.3s;
+    }
+
+    .traduzione {
+      font-size: 1.1rem;
+      color: #5a4631;
+      animation-delay: 0.6s;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .footer {
+      font-size: 0.8rem;
+      color: #8d735a;
+      margin-top: 1.5rem;
+    }
+
+    .instagram {
+      margin-top: 0.8rem;
+      font-size: 0.85rem;
+    }
+
+    .instagram a {
+      color: #a97b50;
+      text-decoration: none;
+    }
+
+    .instagram a:hover {
+      text-decoration: underline;
+    }
+
+    @media screen and (max-width: 600px) {
+      .proverbio {
+        font-size: 1.2rem;
+      }
+      .traduzione {
+        font-size: 1rem;
+      }
+    }
+ 
+@keyframes respiro {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: inset 0 0 0 4px #fff9f2;
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: inset 0 0 8px #e5d4bd;
+  }
+}
+
+.cornice {
+  animation: respiro 8s ease-in-out infinite;
+  animation: respiro 8s ease-in-out infinite, luceCalda 10s ease-in-out infinite;
+}
+
+@keyframes luceCalda {
+  0%, 100% {
+    background-color: rgba(255, 249, 242, 0.92);
+    box-shadow: inset 0 0 0 4px #fff9f2;
+  }
+  50% {
+    background-color: rgba(255, 244, 220, 0.96);
+    box-shadow: inset 0 0 15px #e2c5a1;
+  }
+}
+  </style>
+</head>
+<body>
+  <img src="logo characi.png" alt="Charàci logo" class="logo-symbol" />
+  <div class="logo">Lòghia characiamèna ston kerò • Parole intagliate nel tempo</div>
+  <div class="cornice">
+    <div class="cornice-left"></div>
+    <div class="cornice-right"></div>
+    <div class="proverbio" id="proverbio"></div>
+    <div class="traduzione" id="traduzione"></div>
+  </div>
+  <div class="footer">Ogni proverbio è un seme antico.</div>
+  <div class="instagram">
+    <a href="https://www.instagram.com/fmcharaci" target="_blank">Seguimi su Instagram: @fmcharaci</a>
+  </div>
+
+  <script>
+    const proverbi = [
+      {
+        gr: "O gàdaro den ene gàdaro san ene gàdaro, o gàdaro ene gàdaro san tu dìchi ti scèri.",
+        it: "L’asino non è asino quando è asino, l'asino è asino quando pensa di sapere."
+      },
+      {
+        gr: "Pis pai trèchonda den chorì tìpote.",
+        it: "Chi va correndo non vede nulla."
+      },
+      {
+        gr: "Pis ìpe apòi, den ècame spìti mai.",
+        it: "Chi disse 'poi' non ha mai fatto casa."
+      },
+      {
+        gr: "I glòssa stèa den echi ce stèa clànni.",
+        it: "La lingua ossa non ha e ossa rompe."
+      },
+      {
+        gr: "Ta pedìa ammiàzusi ton gonèo fola i àskla ammiàzi tu cìppu.",
+        it: "I bambini somigliano ai genitori come la scheggia somiglia al ceppo."
+      },
+      {
+        gr: "Càgghio sìmero t'agguò ca àvri tin puddha.",
+        it: "Meglio oggi l'uovo che domani la gallina."
+      },
+      {
+        gr: "Choràfi andìglio ce potisticò ghiomònni to spìti 'sce calò.",
+        it: "Campo soleggiato e irrigato riempe la casa di cose buone."
+      },
+     {
+        gr: "O àthropo me to ttiàri ce i ghinèca me to cutàli.",
+        it: "L'uomo con la pala e la donna con il cucchiaio."
+      },
+     {
+        gr: "I stracòzza den isciàzete to cùcuddho.",
+        it: "La tartaruga non ha paura della grandine."
+      },
+     {
+        gr: "Càmete fola to dendrò ti addhàssi ta fìddha ce cratì tes rìze.",
+        it: "Fate come l'albero che cambia le foglie e conserva le radici."
+      },
+     {
+        gr: "Lirì tin purrì, èbba stin monì. Lirì tin vradìa, èbba stin dulìa..",
+        it: "Arcobaleno la mattina, vai al rifugio. Arcobaleno la sera, vai al lavoro."
+      },
+     {
+        gr: "O milinàri sèrri to nerò ston mìlo dicòndu.",
+        it: "Il mugnaio tira l'acqua al suo mulino."
+      },
+     {
+        gr: "Ta rùcha àplita plènondo sto spìti.",
+        it: "I panni sporchi si lavano in casa."
+      },
+     {
+        gr: "Pis pài ston mìlo alevrònnete.",
+        it: "Chi va al mulino si infarina."
+      },
+     {
+        gr: "Pis pròvato jènete, o lìco to tròghi.",
+        it: "Chi pecora si fa, il lupo lo mangia."
+      },
+     {
+        gr: "Sto stòma climèno den mbènnusi mìghe.",
+        it: "Nella bocca chiusa non entrano mosche."
+      },
+     {
+        gr: "Stin màstra ce sto plìma annorìzete i ghinèca.",
+        it: "Nella madia e nel bucato si riconosce la donna."
+      },
+     {
+        gr: "Càgghio crommìdia sto spìti su ca glicìa sto spìti ton addhò.",
+        it: "Meglio cipolle a casa tua che dolci a casa degli altri."
+      },
+     {
+        gr: "To vùdi cràtete an ta cèrata ce o àthropo an to lògo.",
+        it: "Il bue si tiene dalle corna e l'uomo dalla parola."
+      },
+    ];
+
+    const casuale = proverbi[Math.floor(Math.random() * proverbi.length)];
+    document.getElementById("proverbio").innerText = casuale.gr;
+    document.getElementById("traduzione").innerText = casuale.it;
+  </script>
+</body>
+</html>
